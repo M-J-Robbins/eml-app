@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EML app</title>
+    <link rel="stylesheet" href="/styles.css" type="text/css">
+    <script src="/scripts.js"></script>
+</head>
+<body>
+    <header>
+        <h1>EML app</h1>
+        <p>Upload an EML file and do stuff</p>
+    </header>
+    <main>
+        <h2>Upload eml file</h2>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="emlFile" accept="text/eml,message/rfc822" required>
+            <input type="submit" value="upload">
+
+        </form>
+        <% if (emailData) { %>
+            <h2>Subjuct: <%- emailData.subject %></h2>
+            <h3>MIME types</h3>
+            <ul>
+                <% if(emailData.html) { %> 
+                <li class="true">HTML<span class="sr-only"> true</span></li>
+                <% } else { %>
+                <li class="false">HTML<span class="sr-only"> false</span></li>
+                <% } %>
+                <% if(emailData.text) { %> 
+                    <li class="true">Plain text<span class="sr-only"> true</span></li>
+                <% } else { %>
+                    <li class="false">Plain text<span class="sr-only"> false</span></li>
+                <% } %>
+                <!-- Quick work around as eml-parser doesn't parse an AMP version, this can be done better -->
+                <% if(JSON.stringify(emailData.attachments).includes("text/x-amp-html")) { %> 
+                    <li class="true">AMP<span class="sr-only"> true</span></li>
+                <% } else { %>
+                    <li class="false">AMP<span class="sr-only"> false</span></li>
+                <% } %>
+                </li>
+            </ul>
+            <h3>Open tracking: XXXX</h3>
+            <h3>Click tracking: XXXX</h3>
+            <h3>Attachments: XXX</h3>
+        <% } %>
+        <pre style="max-height:300px; max-width:100%;overflow:auto;background:#ccc; color:#111;     white-space: pre-wrap;">
+            <%= JSON.stringify(emailData) %>
+        </pre>
+        <% if (emailData) { %>
+            <div class="editor">
+                <textarea id="html" oninput="updatePreview()">
+                    <%= emailData.html %>
+                </textarea>
+                <div id="preview">
+                    <menu>
+                        <li><button onclick="htmlPreview()">HTML</button></li>
+                        <li><button onclick="textPreview()">Generate plain text</button></li>
+                        <li><button onclick="noimagePreview()">Remove images</button></li>
+                        <li><button onclick="semanticPreview()">Semantic markup view</button></li>
+                    </menu>
+                    <iframe frameborder="0" id="htmlPreview"></iframe>
+                </div>
+            </div>
+        <% } %>
+
+    </main>
+</body>
+</html>

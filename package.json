@@ -1,22 +1,27 @@
 {
-  "name": "starter-express-api",
+  "name": "eml-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "A web app that takes in an EML file, gives a summary of analysis, allows editing of the email, and send tests to live inboxes.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cyclic-software/starter-express-api.git"
+    "url": "https://github.com/M-J-Robbins/eml-app"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cyclic-software/starter-express-api/issues"
+    "url": "https://github.com/M-J-Robbins/eml-app/issues"
   },
-  "homepage": "https://github.com/cyclic-software/starter-express-api#readme",
+  "homepage": "https://github.com/M-J-Robbins/eml-app#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "ejs": "^3.1.8",
+    "eml-parser": "^1.0.9",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.4.0",
+    "path": "^0.12.7"
   }
 }

@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+html {
+    box-sizing: border-box;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    font-family: 'Open Sans', sans-serif;
+    background:var(--background, #0d1117);
+    color:var(--color, #fcfdff);
+}
+body {
+    margin: 0;
+}
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+header,
+main{
+    padding:1em;
+    max-width:72rem;
+    margin-inline: auto;
+}
+header::after{
+    content: '';
+    display:block;
+    background-image: linear-gradient(to right bottom, rgb(0, 209, 255), rgb(25, 140, 255));
+    height: 1rem;
+}
+input, button, textarea{
+    font-size:inherit
+}
+.editor{
+    display:flex;
+    width:100%;
+    height:500px;
+}
+textarea#html{
+    display:block;
+    resize: horizontal;
+    width:50%;
+    border-width: 0 0.5em 0 0;
+    padding:1em;
+}
+#preview{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+}
+#preview iframe{
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+#preview menu{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap:.5em
+}
+#preview menu > li{
+    list-style: none;
+}
+/* .sr-only {
+    border: 0 !important;
+    clip: rect(1px, 1px, 1px, 1px) !important;
+    -webkit-clip-path: inset(50%) !important;
+    clip-path: inset(50%) !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+    white-space: nowrap !important;
+} */
