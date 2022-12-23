@@ -3,7 +3,7 @@ A web app that takes in an EML file, gives a summary of analysis, allows editing
 
 run `npm start` to launch locally
 
-[View Online version](https://thankful-battledress-crab.cyclic.app)
+<!-- [View Online version](https://thankful-battledress-crab.cyclic.app) -->
 
 ### Deploy it in 7 seconds: 
 
