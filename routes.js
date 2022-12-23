@@ -3,10 +3,7 @@ const fs = require('fs');
 
 const router = express.Router();
 
-let emailData = fs.createReadStream('public/uploads/emaildata.json')
-// console.log(emailData)
-
-
+let emailData = ''
 
 router.get("/", function(req, res){
     console.log('start page')

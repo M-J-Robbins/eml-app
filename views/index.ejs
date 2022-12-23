@@ -11,61 +11,76 @@
 <body>
     <header>
         <h1>EML app</h1>
-        <p>Upload an EML file and do stuff</p>
+        <p>Upload an EML file and do some cool stuff with it.</p>
     </header>
     <main>
         <h2>Upload eml file</h2>
         <form action="/" method="post" enctype="multipart/form-data">
-            <input type="file" name="emlFile" accept="text/eml,message/rfc822" required>
-            <input type="submit" value="upload">
-
+            <label for="file">Select a file to upload</label>
+            <input type="file" name="emlFile" id="file" accept="text/eml,message/rfc822" required>
+            <button type="submit">Upload</button>
         </form>
         <% if (emailData) { %>
-            <h2>Subjuct: <%- emailData.subject %></h2>
-            <h3>MIME types</h3>
-            <ul>
-                <% if(emailData.html) { %> 
-                <li class="true">HTML<span class="sr-only"> true</span></li>
-                <% } else { %>
-                <li class="false">HTML<span class="sr-only"> false</span></li>
-                <% } %>
-                <% if(emailData.text) { %> 
-                    <li class="true">Plain text<span class="sr-only"> true</span></li>
-                <% } else { %>
-                    <li class="false">Plain text<span class="sr-only"> false</span></li>
-                <% } %>
-                <!-- Quick work around as eml-parser doesn't parse an AMP version, this can be done better -->
-                <% if(JSON.stringify(emailData.attachments).includes("text/x-amp-html")) { %> 
-                    <li class="true">AMP<span class="sr-only"> true</span></li>
-                <% } else { %>
-                    <li class="false">AMP<span class="sr-only"> false</span></li>
-                <% } %>
-                </li>
-            </ul>
-            <h3>Open tracking: XXXX</h3>
-            <h3>Click tracking: XXXX</h3>
-            <h3>Attachments: XXX</h3>
-        <% } %>
-        <pre style="max-height:300px; max-width:100%;overflow:auto;background:#ccc; color:#111;     white-space: pre-wrap;">
-            <%= JSON.stringify(emailData) %>
-        </pre>
-        <% if (emailData) { %>
-            <div class="editor">
-                <textarea id="html" oninput="updatePreview()">
-                    <%= emailData.html %>
-                </textarea>
-                <div id="preview">
-                    <menu>
-                        <li><button onclick="htmlPreview()">HTML</button></li>
-                        <li><button onclick="textPreview()">Generate plain text</button></li>
-                        <li><button onclick="noimagePreview()">Remove images</button></li>
-                        <li><button onclick="semanticPreview()">Semantic markup view</button></li>
-                    </menu>
-                    <iframe frameborder="0" id="htmlPreview"></iframe>
+            <section class="emlInfo" aria-labelledby="subject">
+                <h2 id="subject"><%- emailData.subject %></h2>
+                <h3>Email details</h3>
+                <ul class="details">
+                    <li>MIME types</li>
+                    <ul>
+                        <% if(emailData.html) { %> 
+                        <li class="true">HTML: true</li>
+                        <% } else { %>
+                        <li class="false">HTML: false</li>
+                        <% } %>
+                        <% if(emailData.text) { %> 
+                            <li class="true">Plain text: true</li>
+                        <% } else { %>
+                            <li class="false">Plain text: false</li>
+                        <% } %>
+                        <!-- Quick work around as eml-parser doesn't parse an AMP version, this can be done better -->
+                        <% if(JSON.stringify(emailData.attachments).includes("text/x-amp-html")) { %> 
+                            <li class="true">AMP: true/li>
+                        <% } else { %>
+                            <li class="false">AMP: false</li>
+                        <% } %>
+                        </li>
+                    </ul>
+                    <li>Open tracking: <span id="openTracking">false</span></li>
+                    <li>Click tracking: <span id="clickTracking">false</span></li>
+                    <% if(emailData.attachments[0]) { %> 
+                        <li class="true">Attachments</li>
+                        <ul>
+                        <% for (let attachment of emailData.attachments) { %> 
+                            <li>
+                                <% if(attachment.filename) { %> 
+                                <%= attachment.filename %>
+                                <% } else { %>
+                                    Unnammed <%= attachment.contentType %> attachment
+                                <% } %>
+                            </li>
+                        <% } %>
+                        </ul>
+                    <% } else { %>
+                        <li class="false">Attachments: false</li>
+                    <% } %>
+                </ul>
+                <h3>Email editor</h3>
+                <div class="editor">
+                    <textarea id="html" oninput="updatePreview()">
+                        <%= emailData.html %>
+                    </textarea>
+                    <div id="preview">
+                        <menu role="menubar" aria-label="Apply filter to HTML email">
+                            <li><button role="menuitemradio" aria-checked="true" id="buttonHtml" onclick="htmlPreview()">HTML</button></li>
+                            <li><button role="menuitemradio" aria-checked="false" id="buttonText" onclick="textPreview()">Generate text</button></li>
+                            <li><button role="menuitemradio" aria-checked="false" id="buttonImage" onclick="noimagePreview()">Remove images</button></li>
+                            <li><button role="menuitemradio" aria-checked="false" id="buttonSemantic" onclick="semanticPreview()">Semantic markup</button></li>
+                        </menu>
+                        <iframe frameborder="0" id="htmlPreview"></iframe>
+                    </div>
                 </div>
-            </div>
+            </section>
         <% } %>
-
     </main>
 </body>
 </html>

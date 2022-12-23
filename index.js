@@ -15,7 +15,6 @@ app.use(express.static(__dirname + '/public'));
 app.set("port", process.env.PORT ||3000)
 app.use(routes);
 
-
 app.use(
     fileUpload({
         useTempFiles: true,
@@ -25,7 +24,7 @@ app.use(
     })
 )
 
-app.post('/', async (req, res, next) =>{
+app.post('/', async (req, res) =>{
     try{
         // Get the uploaded file
         const file = req.files.emlFile
@@ -52,10 +51,6 @@ app.post('/', async (req, res, next) =>{
 
         let data = JSON.stringify(emailData);
         fs.writeFileSync(path.join(__dirname, 'public', 'uploads', 'emaildata.json'), data);
-        // console.log(emailData.html);
-        // console.log(req.files.emlFile.data)
-
-        // return res.json(JSON.stringify(emailData));
 
         // Redirect back to homepage                
         res.render( "index", {emailData : emailData})
