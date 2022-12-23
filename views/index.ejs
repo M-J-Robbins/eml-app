@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EML app</title>
+    <link rel="stylesheet" href="/styles.css" type="text/css">
+    <script src="/scripts.js"></script>
+</head>
+<body>
+    <header>
+        <h1>EML app</h1>
+        <p>Upload an EML file and do some cool stuff with it.</p>
+    </header>
+    <main>
+        <h2>Upload eml file</h2>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <label for="file">Select a file to upload</label>
+            <input type="file" name="emlFile" id="file" accept="text/eml,message/rfc822" required>
+            <button type="submit">Upload</button>
+        </form>
+        <% if (emailData) { %>
+            <section class="emlInfo" aria-labelledby="subject">
+                <h2 id="subject"><%- emailData.subject %></h2>
+                <h3>Email details</h3>
+                <ul class="details">
+                    <li>MIME types</li>
+                    <ul>
+                        <% if(emailData.html) { %> 
+                        <li class="true">HTML: true</li>
+                        <% } else { %>
+                        <li class="false">HTML: false</li>
+                        <% } %>
+                        <% if(emailData.text) { %> 
+                            <li class="true">Plain text: true</li>
+                        <% } else { %>
+                            <li class="false">Plain text: false</li>
+                        <% } %>
+                        <!-- Quick work around as eml-parser doesn't parse an AMP version, this can be done better -->
+                        <% if(JSON.stringify(emailData.attachments).includes("text/x-amp-html")) { %> 
+                            <li class="true">AMP: true/li>
+                        <% } else { %>
+                            <li class="false">AMP: false</li>
+                        <% } %>
+                        </li>
+                    </ul>
+                    <li>Open tracking: <span id="openTracking">false</span></li>
+                    <li>Click tracking: <span id="clickTracking">false</span></li>
+                    <% if(emailData.attachments[0]) { %> 
+                        <li class="true">Attachments</li>
+                        <ul>
+                        <% for (let attachment of emailData.attachments) { %> 
+                            <li>
+                                <% if(attachment.filename) { %> 
+                                <%= attachment.filename %>
+                                <% } else { %>
+                                    Unnammed <%= attachment.contentType %> attachment
+                                <% } %>
+                            </li>
+                        <% } %>
+                        </ul>
+                    <% } else { %>
+                        <li class="false">Attachments: false</li>
+                    <% } %>
+                </ul>
+                <h3>Email editor</h3>
+                <div class="editor">
+                    <textarea id="html" oninput="updatePreview()">
+                        <%= emailData.html %>
+                    </textarea>
+                    <div id="preview">
+                        <menu role="menubar" aria-label="Apply filter to HTML email">
+                            <li><button role="menuitemradio" aria-checked="true" id="buttonHtml" onclick="htmlPreview()">HTML</button></li>
+                            <li><button role="menuitemradio" aria-checked="false" id="buttonText" onclick="textPreview()">Generate text</button></li>
+                            <li><button role="menuitemradio" aria-checked="false" id="buttonImage" onclick="noimagePreview()">Remove images</button></li>
+                            <li><button role="menuitemradio" aria-checked="false" id="buttonSemantic" onclick="semanticPreview()">Semantic markup</button></li>
+                        </menu>
+                        <iframe frameborder="0" id="htmlPreview"></iframe>
+                    </div>
+                </div>
+            </section>
+        <% } %>
+    </main>
+</body>
+</html>
