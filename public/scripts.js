@@ -1,5 +1,8 @@
 window.onload = () => {
-    updatePreview() 
+    let emailCode = document.getElementById("html")
+    if (emailCode){
+        updatePreview()
+    } 
 };
 
 let version = 'htmlPreview'

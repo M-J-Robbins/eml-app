@@ -39,7 +39,7 @@
                         <% } %>
                         <!-- Quick work around as eml-parser doesn't parse an AMP version, this can be done better -->
                         <% if(JSON.stringify(emailData.attachments).includes("text/x-amp-html")) { %> 
-                            <li class="true">AMP: true/li>
+                            <li class="true">AMP: true</li>
                         <% } else { %>
                             <li class="false">AMP: false</li>
                         <% } %>

@@ -18,7 +18,7 @@ app.use(routes);
 app.use(
     fileUpload({
         useTempFiles: true,
-        tempFileDir: path.join(__dirname, 'temp'),
+        tempFileDir: path.join(__dirname, 'tmp'),
         createParentPath: true,
         limits: { fileSize: 20 * 1024 * 1024 },
     })
